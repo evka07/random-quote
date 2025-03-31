@@ -15,6 +15,7 @@ function generateRandomQuote() {
     const {quote, author} = randomQuote;
     quoteElement.textContent = quote;
     quoteAuthorElement.textContent = author;
+    toggleFavoriteBtn.style.display = 'inline-block';
     toggleFavoriteBtn.textContent = randomQuote.isFavorite
         ? 'Remove'
         : 'Add-to-Favorites'
@@ -46,8 +47,9 @@ function toggleFavorite() {
                 }
             });
         }
-    } catch (e) {
-       alert('First generate random quote');
+    } catch (err) {
+        console.log(err.message, 'currentQuoteIndex is undefined');
+        alert('First generate random quote');
     }
     
 
@@ -56,3 +58,4 @@ function toggleFavorite() {
 generateBtn.addEventListener('click', generateRandomQuote);
 toggleFavoriteBtn.addEventListener('click', toggleFavorite);
 
+// generateRandomQuote();
