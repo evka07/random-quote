@@ -1,15 +1,8 @@
 function switchTheme (){
+    
     const body = document.querySelector('body');
-    let darkMode = body.style.backgroundColor
+    body.classList.toggle('light-mode');
 
-    // Меняем цвет фона в зависимости от состояния
-    if (darkMode) {
-        document.body.style.backgroundColor = '#333'; // Темный фон
-        document.body.style.color = '#fff'; // Белый текст
-    } else {
-        document.body.style.backgroundColor = '#fff'; // Светлый фон
-        document.body.style.color = '#000'; // Черный текст
-    }
 }
 
 
