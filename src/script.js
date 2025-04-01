@@ -12,6 +12,10 @@ const switchBackground = document.querySelector('.form-check-input');
 
 let currentQuoteIndex;
 
+function toggleFavoriteIcon(isFavorite) {
+    toggleFavoriteBtn.classList.toggle('fa-solid', isFavorite);
+    toggleFavoriteBtn.classList.toggle('fa-regular', !isFavorite);
+}
 
 function generateRandomQuote() {
     currentQuoteIndex = Math.floor(Math.random() * quotes.length);
@@ -21,8 +25,7 @@ function generateRandomQuote() {
     quoteElement.textContent = quote;
     quoteAuthorElement.textContent = author;
     toggleFavoriteBtn.style.display = 'inline-block';
-    toggleFavoriteBtn.classList.toggle('fa-solid', randomQuote.isFavorite);
-    toggleFavoriteBtn.classList.toggle('fa-regular', !randomQuote.isFavorite);
+    toggleFavoriteIcon(randomQuote.isFavorite)
 }
 
 
@@ -32,8 +35,8 @@ function toggleFavorite() {
         const currentQuote = quotes[currentQuoteIndex];
         currentQuote.isFavorite = !currentQuote.isFavorite;
         console.log(quotes)
-        toggleFavoriteBtn.classList.toggle('fa-solid', currentQuote.isFavorite);
-        toggleFavoriteBtn.classList.toggle('fa-regular', !currentQuote.isFavorite);
+        toggleFavoriteIcon(currentQuote.isFavorite)
+    
 
         if (currentQuote.isFavorite) {
             const favoriteCard = document.createElement('div');
