@@ -1,12 +1,17 @@
 import quotes from "./quotes.js";
+import switchTheme from "./theme.js";
 
 const quoteElement = document.getElementById('quote');
 const generateBtn = document.getElementById('generate-btn');
 const quoteAuthorElement = document.getElementById('quote-author');
 const toggleFavoriteBtn = document.getElementById('toggle-favorite-btn');
 const favoritesContainer = document.getElementById('favorites-container');
+const switchBackground = document.querySelector('.form-check-input');
+
+
 
 let currentQuoteIndex;
+
 
 function generateRandomQuote() {
     currentQuoteIndex = Math.floor(Math.random() * quotes.length);
@@ -16,10 +21,10 @@ function generateRandomQuote() {
     quoteElement.textContent = quote;
     quoteAuthorElement.textContent = author;
     toggleFavoriteBtn.style.display = 'inline-block';
-    toggleFavoriteBtn.textContent = randomQuote.isFavorite
-        ? 'Remove'
-        : 'Add-to-Favorites'
+    toggleFavoriteBtn.classList.toggle('fa-solid', randomQuote.isFavorite);
+    toggleFavoriteBtn.classList.toggle('fa-regular', !randomQuote.isFavorite);
 }
+
 
 function toggleFavorite() {
     console.log(currentQuoteIndex);
@@ -27,9 +32,8 @@ function toggleFavorite() {
         const currentQuote = quotes[currentQuoteIndex];
         currentQuote.isFavorite = !currentQuote.isFavorite;
         console.log(quotes)
-        toggleFavoriteBtn.textContent = currentQuote.isFavorite
-            ? 'Remove'
-            : 'Add-to-Favorites'
+        toggleFavoriteBtn.classList.toggle('fa-solid', currentQuote.isFavorite);
+        toggleFavoriteBtn.classList.toggle('fa-regular', !currentQuote.isFavorite);
 
         if (currentQuote.isFavorite) {
             const favoriteCard = document.createElement('div');
@@ -55,7 +59,9 @@ function toggleFavorite() {
 
 }
 
+
+
 generateBtn.addEventListener('click', generateRandomQuote);
 toggleFavoriteBtn.addEventListener('click', toggleFavorite);
-
+switchBackground.addEventListener('click', switchTheme)
 // generateRandomQuote();
