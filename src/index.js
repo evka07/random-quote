@@ -1,5 +1,6 @@
 import quotes from "./quotes.js";
 import switchTheme from "./theme.js";
+import { hideFavoriteCard, showFavoriteCard, toggleFavoriteIcon } from "./favoritesHandler.js";
 
 const quoteElement = document.getElementById('quote');
 const generateBtn = document.getElementById('generate-btn');
@@ -8,14 +9,7 @@ const toggleFavoriteBtn = document.getElementById('toggle-favorite-btn');
 const favoritesContainer = document.getElementById('favorites-container');
 const switchBackground = document.querySelector('.form-check-input');
 
-
-
 let currentQuoteIndex;
-
-function toggleFavoriteIcon(isFavorite) {
-    toggleFavoriteBtn.classList.toggle('fa-solid', isFavorite);
-    toggleFavoriteBtn.classList.toggle('fa-regular', !isFavorite);
-}
 
 function generateRandomQuote() {
     currentQuoteIndex = Math.floor(Math.random() * quotes.length);
@@ -24,8 +18,8 @@ function generateRandomQuote() {
     const {quote, author} = randomQuote;
     quoteElement.textContent = quote;
     quoteAuthorElement.textContent = author;
+    toggleFavoriteIcon(randomQuote.isFavorite, toggleFavoriteBtn)
     toggleFavoriteBtn.style.display = 'inline-block';
-    toggleFavoriteIcon(randomQuote.isFavorite)
 }
 
 
@@ -35,36 +29,22 @@ function toggleFavorite() {
         const currentQuote = quotes[currentQuoteIndex];
         currentQuote.isFavorite = !currentQuote.isFavorite;
         console.log(quotes)
-        toggleFavoriteIcon(currentQuote.isFavorite)
-    
+        toggleFavoriteIcon(currentQuote.isFavorite, toggleFavoriteBtn)
 
         if (currentQuote.isFavorite) {
-            const favoriteCard = document.createElement('div');
-            favoriteCard.classList.add('favorite-card');
-            favoriteCard.innerHTML = `
-        <p>${currentQuote.quote}</p>
-        <p class="author">${currentQuote.author}</p>`;
-            favoritesContainer.appendChild(favoriteCard);
+            showFavoriteCard(currentQuote.quote, currentQuote.author, favoritesContainer)
         } else {
-            //Remove favorite card if quote is unfavorited
-            const favoriteCards = document.querySelectorAll('.favorite-card');
-            favoriteCards.forEach((card) => {
-                if (card.textContent.includes(currentQuote.quote)) {
-                    card.remove()
-                }
-            });
+            hideFavoriteCard(currentQuote.quote)
         }
     } catch (err) {
         console.log(err.message, 'currentQuoteIndex is undefined');
         alert('First generate random quote');
     }
-    
-
 }
 
 
 
-generateBtn.addEventListener('click', generateRandomQuote);
-toggleFavoriteBtn.addEventListener('click', toggleFavorite);
-switchBackground.addEventListener('click', switchTheme)
-// generateRandomQuote();
+    generateBtn.addEventListener('click', generateRandomQuote);
+    toggleFavoriteBtn.addEventListener('click', toggleFavorite);
+    switchBackground.addEventListener('click', switchTheme);
+// generateRandomQuote()
