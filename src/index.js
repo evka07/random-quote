@@ -1,25 +1,45 @@
 import quotes from "./quotes.js";
 import switchTheme from "./theme.js";
-import { hideFavoriteCard, showFavoriteCard, toggleFavoriteIcon } from "./favoritesHandler.js";
+import { hideFavoriteCard, showFavoriteCard, toggleFavoriteIcon, showToggleFavoriteBtn, hideToggleFavoriteBtn } from "./favoritesHandler.js";
+import { generateRandomInt } from "./utils.js";
 
-const quoteElement = document.getElementById('quote');
+
 const generateBtn = document.getElementById('generate-btn');
-const quoteAuthorElement = document.getElementById('quote-author');
 const toggleFavoriteBtn = document.getElementById('toggle-favorite-btn');
 const favoritesContainer = document.getElementById('favorites-container');
 const switchBackground = document.querySelector('.form-check-input');
 
+
 let currentQuoteIndex;
 
-function generateRandomQuote() {
-    currentQuoteIndex = Math.floor(Math.random() * quotes.length);
-    console.log(currentQuoteIndex, quotes)
-    const randomQuote = quotes[currentQuoteIndex];
-    const {quote, author} = randomQuote;
-    quoteElement.textContent = quote;
+hideToggleFavoriteBtn(toggleFavoriteBtn)
+
+function displayQuote(quote) {
+    const { text, author, isFavorite } = quote;
+    const quoteElement = document.getElementById('quote');
+    const quoteAuthorElement = document.getElementById('quote-author');
+    quoteElement.textContent = text;
     quoteAuthorElement.textContent = author;
-    toggleFavoriteIcon(randomQuote.isFavorite, toggleFavoriteBtn)
-    toggleFavoriteBtn.style.display = 'inline-block';
+    showToggleFavoriteBtn(toggleFavoriteBtn)
+    toggleFavoriteIcon(isFavorite, toggleFavoriteBtn)
+}
+
+
+function chooseRandomQuote() {
+    const randomIndex = generateRandomInt(quotes.length);
+    currentQuoteIndex = randomIndex;
+    return quotes[randomIndex];
+    
+}
+
+chooseRandomQuote()
+
+
+
+function generateAndDisplayRandomQuote(){
+    const randomQuote = chooseRandomQuote();
+    displayQuote(randomQuote);
+    
 }
 
 
@@ -28,13 +48,12 @@ function toggleFavorite() {
     try {
         const currentQuote = quotes[currentQuoteIndex];
         currentQuote.isFavorite = !currentQuote.isFavorite;
-        console.log(quotes)
         toggleFavoriteIcon(currentQuote.isFavorite, toggleFavoriteBtn)
 
         if (currentQuote.isFavorite) {
-            showFavoriteCard(currentQuote.quote, currentQuote.author, favoritesContainer)
+            showFavoriteCard(currentQuote.text, currentQuote.author, favoritesContainer)
         } else {
-            hideFavoriteCard(currentQuote.quote)
+            hideFavoriteCard(currentQuote.text)
         }
     } catch (err) {
         console.log(err.message, 'currentQuoteIndex is undefined');
@@ -44,7 +63,8 @@ function toggleFavorite() {
 
 
 
-    generateBtn.addEventListener('click', generateRandomQuote);
+    generateBtn.addEventListener('click', generateAndDisplayRandomQuote);
     toggleFavoriteBtn.addEventListener('click', toggleFavorite);
     switchBackground.addEventListener('click', switchTheme);
-// generateRandomQuote()
+    // generateAndDisplayRandomQuote()
+    

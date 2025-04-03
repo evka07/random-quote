@@ -16,7 +16,6 @@ body {
         width: 250px;
     }
     .fa-star {
-        display: none;
         color: #ffffff;
         font-size: 32px;
         cursor: pointer;
@@ -71,7 +70,7 @@ body {
 
 
 .fa-star {
-    display: none;
+
     color: #ffffff;
     font-size: 32px;
     cursor: pointer;
