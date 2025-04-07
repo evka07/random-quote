@@ -1,54 +1,48 @@
-import { currentQuote } from "./quotes.js";
+import { favoriteBtn } from '../index.js';
 
-const toggleBtn = document.getElementById('toggle-favorite-btn');
-const favoritesContainer = document.getElementById('favorites-container');
+function toggleFavorite(quote, btn, container) {
+    try{
+        quote.isFavorite = !quote.isFavorite;
+        const { text, author, isFavorite } = quote;
+        toggleFavoriteBtnIcon(isFavorite, btn);
 
-
-hideBtn(toggleBtn)
-
-function toggleFavorite() {
-    try {
-        currentQuote.isFavorite = !currentQuote.isFavorite;
-        console.log(currentQuote);
-        toggleFavoriteIcon(currentQuote.isFavorite, toggleBtn)
-
-        if (currentQuote.isFavorite) {
-            showFavoriteCard(currentQuote.text, currentQuote.author, favoritesContainer)
+        if (isFavorite) {
+            showFavoriteCard(text, author, container);
         } else {
-            hideFavoriteCard(currentQuote.text)
+            hideFavoriteCard(text);
         }
     } catch (err) {
         console.log(err.message, 'currentQuote is undefined');
         alert('First generate random quote');
     }
+   
 }
 
 function handleFavorite(isFavorite) {
-    showBtn(toggleBtn)
-    toggleFavoriteIcon(isFavorite, toggleBtn)
+    showFavoriteBtn(favoriteBtn);
+    toggleFavoriteBtnIcon(isFavorite, favoriteBtn);
 }
 
-function toggleFavoriteIcon(isFavorite, el) {
+function toggleFavoriteBtnIcon(isFavorite, el) {
     el.classList.toggle('fa-solid', isFavorite);
     el.classList.toggle('fa-regular', !isFavorite);
 }
 
-function showBtn (btn) {
+function showFavoriteBtn(btn) {
     btn.style.display = 'inline-block';
 }
 
-function hideBtn (btn) {
+function hideFavoriteBtn(btn) {
     btn.style.display = 'none';
 }
-
-
 
 function showFavoriteCard(text, author, container) {
     const favoriteCard = document.createElement('div');
     favoriteCard.classList.add('favorite-card');
     favoriteCard.innerHTML = `
-        <p>${text}</p>
-        <p class="author">${author}</p>`;
+      <p>${text}</p>
+      <p class="author">${author}</p>
+    `;
     container.appendChild(favoriteCard);
 }
 
@@ -61,8 +55,4 @@ function hideFavoriteCard(text) {
     });
 }
 
-toggleBtn.addEventListener('click', toggleFavorite);
-
-
-
-export { handleFavorite };
+export { handleFavorite, toggleFavorite, hideFavoriteBtn };
