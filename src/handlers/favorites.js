@@ -1,58 +1,25 @@
-import { favoriteBtn } from '../index.js';
+import {handleFavorite} from "./quote.js";
+import {generateRandomInt} from "../utils.js";
 
-function toggleFavorite(quote, btn, container) {
-    try{
-        quote.isFavorite = !quote.isFavorite;
-        const { text, author, isFavorite } = quote;
-        toggleFavoriteBtnIcon(isFavorite, btn);
 
-        if (isFavorite) {
-            showFavoriteCard(text, author, container);
-        } else {
-            hideFavoriteCard(text);
-        }
-    } catch (err) {
-        console.log(err.message, 'currentQuote is undefined');
-        alert('First generate random quote');
-    }
-   
+function handleQuote(quotes, setCurrentQuote) {
+    const randomQuote = choseRandomQuote(quotes);
+    setCurrentQuote(randomQuote);
+    displayQuote(randomQuote);
 }
 
-function handleFavorite(isFavorite) {
-    showFavoriteBtn(favoriteBtn);
-    toggleFavoriteBtnIcon(isFavorite, favoriteBtn);
+function displayQuote(quote) {
+    const { text, author, isFavorite } = quote;
+    const quoteElement = document.getElementById('quote');
+    const quoteAuthorElement = document.getElementById('quote-author');
+    quoteElement.textContent = text;
+    quoteAuthorElement.textContent = author;
+    handleFavorite(isFavorite);
 }
 
-function toggleFavoriteBtnIcon(isFavorite, el) {
-    el.classList.toggle('fa-solid', isFavorite);
-    el.classList.toggle('fa-regular', !isFavorite);
+function choseRandomQuote(quotes) {
+    const randomIndex = generateRandomInt(quotes.length);
+    return quotes[randomIndex];
 }
 
-function showFavoriteBtn(btn) {
-    btn.style.display = 'inline-block';
-}
-
-function hideFavoriteBtn(btn) {
-    btn.style.display = 'none';
-}
-
-function showFavoriteCard(text, author, container) {
-    const favoriteCard = document.createElement('div');
-    favoriteCard.classList.add('favorite-card');
-    favoriteCard.innerHTML = `
-      <p>${text}</p>
-      <p class="author">${author}</p>
-    `;
-    container.appendChild(favoriteCard);
-}
-
-function hideFavoriteCard(text) {
-    const favoriteCards = document.querySelectorAll('.favorite-card');
-    favoriteCards.forEach((card) => {
-        if (card.textContent.includes(text)) {
-            card.remove();
-        }
-    });
-}
-
-export { handleFavorite, toggleFavorite, hideFavoriteBtn };
+export { handleQuote };
