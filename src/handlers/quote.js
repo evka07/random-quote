@@ -1,4 +1,4 @@
-import {favoriteBtn} from "../index.js";
+import {quoteFavoriteBtn} from "../index.js";
 
 
 function toggleFavorite(quote, btn, container) {
@@ -13,21 +13,21 @@ function toggleFavorite(quote, btn, container) {
 }
 
 function handleFavorite(isFavorite) {
-    showFavoriteBtn(favoriteBtn);
-    toggleFavoriteBtnIcon(isFavorite, favoriteBtn);
+    showFavoriteBtn();
+    toggleFavoriteBtnIcon(isFavorite);
 }
 
-function toggleFavoriteBtnIcon(isFavorite, el) {
-    el.classList.toggle('fa-solid', isFavorite);
-    el.classList.toggle('fa-regular', !isFavorite);
+function toggleFavoriteBtnIcon(isFavorite) {
+    quoteFavoriteBtn.classList.toggle('fa-solid', isFavorite);
+    quoteFavoriteBtn.classList.toggle('fa-regular', !isFavorite);
 }
 
-function showFavoriteBtn(btn) {
-    btn.style.display = 'inline-block';
+function showFavoriteBtn() {
+    quoteFavoriteBtn.style.display = 'inline-block';
 }
 
-function hideFavoriteBtn(btn) {
-    btn.style.display = 'none';
+function hideFavoriteBtn() {
+    quoteFavoriteBtn.style.display = 'none';
 }
 
 function showFavoriteCard(quote, container) {
@@ -35,12 +35,33 @@ function showFavoriteCard(quote, container) {
     const favoriteCard = document.createElement('div');
     favoriteCard.classList.add('favorite-card');
     favoriteCard.dataset.quoteId = id;
+    const favoriteCardId = quote.id;
+    console.log(favoriteCardId);
     favoriteCard.innerHTML = `
-      <p>${text}</p>
-      <p class="author">${author}</p>
+    <div class="favorite-card-content">
+       <p>${text}</p>
+       <p class="author">${author}</p>
+    </div>
+    <button id="removeBtn" class="btn btn-danger">Remove</button>
     `;
     container.appendChild(favoriteCard);
+    const removeBtn = favoriteCard.querySelector('.btn-danger');
+    removeBtn.addEventListener('click', () => {
+        quote.isFavorite = !quote.isFavorite;
+        const currentQuote = document.querySelector('[data-current-quote-id]');
+        const currentQuoteId = currentQuote.dataset.currentQuoteId
+        console.log(currentQuote);
+        hideFavoriteCard(id)
+        if(id === currentQuoteId) {
+            toggleFavoriteBtnIcon(quote.isFavorite)
+        }
+        
+        console.log('Remove button clicked ID:', id);
+    });
 }
+
+
+
 
 function hideFavoriteCard(id) {
     const card = document.querySelector(`.favorite-card[data-quote-id="${id}"]`);
