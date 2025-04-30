@@ -10,7 +10,7 @@ body {
     .favorite-card {
         background-color: #007bff;
         color: black;
-        padding: 10px 20px;
+        padding: 10px 10px;
         margin: 10px;
         border-radius: 8px;
         width: 250px;
@@ -29,7 +29,12 @@ body {
     }
 
 }
-
+.quote {
+    margin-bottom: 25px;
+}
+.quote p {
+    min-height: 40px;
+}
 .form-check {
     margin: 25px 20px;
     display: flex;
@@ -42,7 +47,7 @@ body {
 }
 
 .container {
-    margin: 50px auto;
+    margin: 30px auto;
     text-align: center;
 }
 .favorites-container {
@@ -56,17 +61,17 @@ body {
     flex-direction: column;
     background-color: #f9f9f9;
     color: #007bff;
-    padding: 10px 20px;
+    padding: 10px 10px;
     margin: 10px;
     border-radius: 8px;
-    width: 250px;
+    width: 280px;
 }
 .favorite-card-content {
     flex: 1;
     padding: 10px;
 }
 
-.author {
+.favorite-card-author {
     font-style: italic;
 }
 
@@ -108,13 +113,14 @@ body {
     color: yellow;
     vertical-align: middle;
 }
-.quote {
+.quote-text {
     margin-bottom: 20px;
-    font-style: italic ;
+    font-style: italic;
+    font-size: 25px;
 }
 
-.quote::before,
-.quote::after {
+.quote-text::before,
+.quote-text::after {
     content: '"';
 }
 

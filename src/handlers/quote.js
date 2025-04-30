@@ -8,7 +8,7 @@ function toggleFavorite(quote, btn, container) {
     if (quote.isFavorite) {
         showFavoriteCard(quote, container);
     } else {
-        hideFavoriteCard(quote.id);
+        removeFavoriteCard(quote.id);
     }
 }
 
@@ -30,41 +30,38 @@ function hideFavoriteBtn() {
     quoteFavoriteBtn.style.display = 'none';
 }
 
+function removeFavoriteQuote(quote) {
+    quote.isFavorite = false;
+    const currentQuote = document.querySelector('[data-current-quote-id]');
+    const currentQuoteId = currentQuote.dataset.currentQuoteId
+    console.log(currentQuote);
+    removeFavoriteCard(quote.id)
+    console.log('Remove button clicked ID:', quote.id)
+    if(quote.id === currentQuoteId) {
+        toggleFavoriteBtnIcon(quote.isFavorite)
+    }};
+
 function showFavoriteCard(quote, container) {
     const { id, text, author } = quote;
     const favoriteCard = document.createElement('div');
     favoriteCard.classList.add('favorite-card');
-    favoriteCard.dataset.quoteId = id;
+    favoriteCard.dataset.favoriteQuoteId = id;
     const favoriteCardId = quote.id;
     console.log(favoriteCardId);
     favoriteCard.innerHTML = `
     <div class="favorite-card-content">
        <p>${text}</p>
-       <p class="author">${author}</p>
+       <p class="favorite-card-author">${author}</p>
     </div>
-    <button id="removeBtn" class="btn btn-danger">Remove</button>
+    <button id="removeBtn" class="btn btn-danger">Remove <i class="far fa-trash-alt"></i></button>
     `;
     container.appendChild(favoriteCard);
     const removeBtn = favoriteCard.querySelector('.btn-danger');
-    removeBtn.addEventListener('click', () => {
-        quote.isFavorite = !quote.isFavorite;
-        const currentQuote = document.querySelector('[data-current-quote-id]');
-        const currentQuoteId = currentQuote.dataset.currentQuoteId
-        console.log(currentQuote);
-        hideFavoriteCard(id)
-        if(id === currentQuoteId) {
-            toggleFavoriteBtnIcon(quote.isFavorite)
-        }
-        
-        console.log('Remove button clicked ID:', id);
-    });
+    removeBtn.addEventListener('click', () => removeFavoriteQuote(quote));
 }
 
-
-
-
-function hideFavoriteCard(id) {
-    const card = document.querySelector(`.favorite-card[data-quote-id="${id}"]`);
+function removeFavoriteCard(id) {
+    const card = document.querySelector(`[data-favorite-quote-id="${id}"]`);
     if (card) {
         card.remove();
     }
